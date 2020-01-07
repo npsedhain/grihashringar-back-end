@@ -1,0 +1,27 @@
+{
+  "name": "grihashringar-back-end",
+  "version": "1.0.0",
+  "description": "This is the backend of the app.",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/npsedhain/grihashringar-back-end.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/npsedhain/grihashringar-back-end/issues"
+  },
+  "homepage": "https://github.com/npsedhain/grihashringar-back-end#readme",
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "mongoose": "^5.8.5"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.2"
+  }
+}
