@@ -1,24 +1,27 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
-const app = express(); 
+
 require('dotenv/config');
+
+const app = express(); 
 
 //load body parser
 app.use(bodyParser.json());
 
 //Import routes
+const adminRoute = require('./controller/admin.route');
+const loginRoute = require('./controller/login.route');
 const inventoryRoute = require('./controller/inventory.route');
 
-app.use('/inventory', inventoryRoute);
+// Router level middleware
+app.use('/api/admin', adminRoute);
+app.use('/api/login', loginRoute);
+app.use('/api/inventory', inventoryRoute);
 
 //ROUTES
 app.get('/', (req, res) => {
   res.send('We are in home');
-});
-
-app.get('/posts', (req, res) => {
-  res.send({posts: "This is a post"});
 });
 
 //Connect to db
