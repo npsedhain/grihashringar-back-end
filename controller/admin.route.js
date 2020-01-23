@@ -1,4 +1,5 @@
 const router = require('express').Router();
+const bcrypt = require('bcryptjs');
 
 const Admin = require('../models/Admin');
 const assignId = require('../helper/assignId');
@@ -15,21 +16,42 @@ router
       });
   })
   .post(async(req, res) => {
-    const { username, password } = req.body;
+    const { username, password, mobile } = req.body;
+    if (!username || !password) {
+      res.json({ message: 'Username or password or both not entered.' });
+      return;
+    }
+    const user = await Admin.find({ username });
+    if (user.length) {
+      res.json({ message: 'User already exists.' });
+      return;
+    }
+
     const _id = await assignId(Admin);
     if (_id !== null) {
       const admin = new Admin({
         _id,
         username,
-        password
+        password,
+        mobile
       });
-      admin.save()
-        .then(success => {
-          res.status(200).json(success);
-        })
-        .catch(error => {
-          res.status(400).json(error);
-        });
+
+      //hash password
+      bcrypt.genSalt(10, (err, salt) => bcrypt.hash(admin.password, salt, (err, hash) => {
+        if (err) {
+          console.log(err);
+        }
+        admin.password = hash;
+        admin.save()
+          .then(success => {
+            res.status(200).json(success);
+          })
+          .catch(error => {
+            res.status(400).json(error);
+          });
+      }))
+    } else {
+      res.status(500).json({ message: 'Error while generating id, please try again.' });
     }
   });
 

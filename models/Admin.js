@@ -12,6 +12,13 @@ const AdminSchema = mongoose.Schema({
   password: {
     type: String,
     required: true
+  },
+  mobile: {
+    type: Number
+  },
+  date: {
+    type: Date,
+    default: Date.now()
   }
 });
 
