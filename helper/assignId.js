@@ -1,7 +1,11 @@
-const assignId = (model) => {
-  return model.find()
+const assignId = model => {
+  return model
+    .find()
     .then(response => {
-      return response.length + 1;
+      if (!response.length) {
+        return 1;
+      }
+      return response[response.length - 1]._id + 1;
     })
     .catch(error => {
       return null;

@@ -1,12 +1,15 @@
-const router = require('express').Router();
-const bcrypt = require('bcryptjs');
+const router = require("express").Router();
+const bcrypt = require("bcryptjs");
 
-const Admin = require('../models/Admin');
-const assignId = require('../helper/assignId');
+const Admin = require("../models/Admin");
+const assignId = require("../helper/assignId");
+
+// authentication middleware
+const isAuthenticated = require("../middlewares/isAuthenticated");
 
 router
-  .route('/')
-  .get((req, res) => {
+  .route("/")
+  .get(isAuthenticated, (req, res) => {
     Admin.find()
       .then(admins => {
         res.status(200).json(admins);
@@ -15,15 +18,15 @@ router
         res.status(404).json(error);
       });
   })
-  .post(async(req, res) => {
+  .post(async (req, res) => {
     const { username, password, mobile } = req.body;
     if (!username || !password) {
-      res.json({ message: 'Username or password or both not entered.' });
+      res.json({ message: "Username or password or both not entered." });
       return;
     }
     const user = await Admin.find({ username });
     if (user.length) {
-      res.json({ message: 'User already exists.' });
+      res.json({ message: "User already exists." });
       return;
     }
 
@@ -37,39 +40,42 @@ router
       });
 
       //hash password
-      bcrypt.genSalt(10, (err, salt) => bcrypt.hash(admin.password, salt, (err, hash) => {
-        if (err) {
-          console.log(err);
-        }
-        admin.password = hash;
-        admin.save()
-          .then(success => {
-            res.status(200).json(success);
-          })
-          .catch(error => {
-            res.status(400).json(error);
-          });
-      }))
+      bcrypt.genSalt(10, (err, salt) =>
+        bcrypt.hash(admin.password, salt, (err, hash) => {
+          if (err) {
+            console.log(err);
+          }
+          admin.password = hash;
+          admin
+            .save()
+            .then(success => {
+              res.status(200).json(success);
+            })
+            .catch(error => {
+              res.status(400).json(error);
+            });
+        })
+      );
     } else {
-      res.status(500).json({ message: 'Error while generating id, please try again.' });
+      res
+        .status(500)
+        .json({ message: "Error while generating id, please try again." });
     }
   });
 
-  router
-    .route('/:_id')
-      .delete((req, res) => {
-        const _id = req.params._id;
-        Admin.deleteOne({_id})
-          .then(success => {
-            if (!success.deletedCount) {
-              res.status(400).json({message: "No entries found to be deleted."});
-              return;
-            }
-            res.status(200).json(success);
-          })
-          .catch(error => {
-            res.status(400).json(error);
-          })
-      });
+router.route("/:_id").delete((req, res) => {
+  const _id = req.params._id;
+  Admin.deleteOne({ _id })
+    .then(success => {
+      if (!success.deletedCount) {
+        res.status(400).json({ message: "No entries found to be deleted." });
+        return;
+      }
+      res.status(200).json(success);
+    })
+    .catch(error => {
+      res.status(400).json(error);
+    });
+});
 
-  module.exports = router;
+module.exports = router;
