@@ -1,7 +1,7 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 // Item itself will be increased or decreased when bought from the sellers/ sold to buyers.
-const InventorySchema = mongoose.Schema({
+const ItemSchema = mongoose.Schema({
   _id: {
     type: Number,
     required: true
@@ -13,11 +13,11 @@ const InventorySchema = mongoose.Schema({
     required: true
   },
   cost_price: {
-    type: Number,
+    type: Number
     // required: true
   },
   marked_price: {
-    type: Number,
+    type: Number
     // required: true
   },
   description: {
@@ -25,7 +25,7 @@ const InventorySchema = mongoose.Schema({
   },
   // Will be reduced when it's sold and increased when bought.
   volume: {
-    type: Number,
+    type: Number
     // required: true
   },
   // Will come from the supplier table.
@@ -33,7 +33,7 @@ const InventorySchema = mongoose.Schema({
   // Select from the arrays of suppliers -> Dropdown menu
   // May letter keep a reference or a subdoc, need to check.
   seller: {
-    type: String,
+    type: String
     // required: true
   },
   image: {
@@ -44,8 +44,8 @@ const InventorySchema = mongoose.Schema({
   branch: {
     type: String,
     // required: true,
-    default: 'Godown'
+    default: "Godown"
   }
 });
 
-module.exports = mongoose.model('Inventory', InventorySchema);
+module.exports = mongoose.model("Item", ItemSchema);

@@ -1,12 +1,10 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
-
 const cors = require("cors");
+const app = express();
 
 require("dotenv/config");
-
-const app = express();
 
 // load cors
 app.use(cors());
@@ -18,12 +16,14 @@ app.use(bodyParser.json());
 const loginRoute = require("./controller/login.route");
 const adminRoute = require("./controller/admin.route");
 const refreshRoute = require("./controller/refresh.route");
-const inventoryRoute = require("./controller/inventory.route");
+const categoryRoute = require("./controller/category.route");
+const itemRoute = require("./controller/item.route");
 
 // Router level middleware
 app.use("/api/admin", adminRoute);
 app.use("/api/login", loginRoute);
-app.use("/api/inventory", inventoryRoute);
+app.use("/api/category", categoryRoute);
+app.use("/api/inventory", itemRoute);
 app.use("/api/token/refresh", refreshRoute);
 
 //ROUTES
@@ -37,7 +37,15 @@ mongoose.connect(
   {
     useNewUrlParser: true
   },
-  () => console.log("Connected to db")
+  (err, db) => {
+    if (err) {
+      res
+        .status(500)
+        .json({ err, message: " Error connecting to the database. " });
+      return;
+    }
+    console.log("Connected to db at port,", process.env.PORT);
+  }
 );
 
 app.listen(process.env.PORT);

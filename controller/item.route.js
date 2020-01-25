@@ -1,10 +1,10 @@
-const router = require('express').Router();
+const router = require("express").Router();
 
-const Inventory = require('../models/Inventory');
+const Item = require("../models/Item");
 
 router
-  .route('/')
-  .get((req,res) => {
+  .route("/")
+  .get((req, res) => {
     const query = {};
     const category = req.query.category;
     const seller = req.query.seller;
@@ -14,53 +14,55 @@ router
     if (seller) {
       query.seller = seller;
     }
-    Inventory.find(query)
+    Item.find(query)
       .then(items => {
         res.status(200).json(items);
       })
       .catch(err => {
         res.status(404).json(err);
-      })
-    })
-  .post((req,res) => {
-    const item = new Inventory({
+      });
+  })
+  .post((req, res) => {
+    const item = new Item({
       _id: req.body._id,
       category: req.body.category,
       seller: req.body.seller,
       description: req.body.description
     });
 
-    item.save()
+    item
+      .save()
       .then(success => {
         res.status(200).json(success);
       })
       .catch(error => {
-        res.status(400).json(error);
+        res.status(500).json(error);
       });
   });
 
-  router.route('/:category')
-    .get((req,res) => {
-      Inventory.find({category: req.params.category})
-        .then(items => {
-          res.status(200).json(items);
-        })
-        .catch(err => {
-          res.status(404).json(err);
-        });
-    })
-    .delete((req,res) => {
-      Inventory.deleteMany({category: req.params.category})
+router
+  .route("/:category")
+  .get((req, res) => {
+    Item.find({ category: req.params.category })
+      .then(items => {
+        res.status(200).json(items);
+      })
+      .catch(err => {
+        res.status(404).json(err);
+      });
+  })
+  .delete((req, res) => {
+    Item.deleteMany({ category: req.params.category })
       .then(success => {
         if (!success.deletedCount) {
-          res.status(400).json({message: "No items deleted." });
-          return;         
+          res.status(400).json({ message: "No items deleted." });
+          return;
         }
         res.status(200).json(success);
       })
       .catch(err => {
         res.status(404).json(err);
       });
-    });
+  });
 
 module.exports = router;
