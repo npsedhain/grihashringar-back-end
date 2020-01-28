@@ -10,7 +10,8 @@ const CategorySchema = mongoose.Schema({
     required: true
   },
   type: {
-    type: Array
+    type: Array,
+    default: []
   }
 });
 

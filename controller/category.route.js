@@ -4,6 +4,10 @@ const Category = require("../models/Category");
 
 const assignId = require("../helper/assignId");
 
+// authentication middleware
+const isAuthenticated = require("../middlewares/isAuthenticated");
+router.use(isAuthenticated);
+
 router
   .route("/")
   .get((req, res) => {
@@ -36,10 +40,10 @@ router
 router
   .route("/:id")
   .put((req, res) => {
-    const { name } = req.body;
+    const { type } = req.body;
     Category.findByIdAndUpdate(
       req.params.id,
-      { name: name.toUpperCase() },
+      { $push: { type } },
       { new: true, useFindAndModify: false }
     )
       .then(success => {

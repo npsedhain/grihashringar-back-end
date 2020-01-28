@@ -4,6 +4,10 @@ const Item = require("../models/Item");
 
 const assignId = require("../helper/assignId");
 
+// authentication middleware
+const isAuthenticated = require("../middlewares/isAuthenticated");
+router.use(isAuthenticated);
+
 router
   .route("/")
   .get((req, res) => {

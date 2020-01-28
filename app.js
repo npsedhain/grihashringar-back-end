@@ -13,17 +13,17 @@ app.use(cors());
 app.use(bodyParser.json());
 
 //Import routes
+const itemRoute = require("./controller/item.route");
 const loginRoute = require("./controller/login.route");
 const adminRoute = require("./controller/admin.route");
 const refreshRoute = require("./controller/refresh.route");
 const categoryRoute = require("./controller/category.route");
-const itemRoute = require("./controller/item.route");
 
 // Router level middleware
+app.use("/api/item", itemRoute);
 app.use("/api/admin", adminRoute);
 app.use("/api/login", loginRoute);
 app.use("/api/category", categoryRoute);
-app.use("/api/item", itemRoute);
 app.use("/api/token/refresh", refreshRoute);
 
 //ROUTES

@@ -6,10 +6,11 @@ const assignId = require("../helper/assignId");
 
 // authentication middleware
 const isAuthenticated = require("../middlewares/isAuthenticated");
+router.use(isAuthenticated);
 
 router
   .route("/")
-  .get(isAuthenticated, (req, res) => {
+  .get((req, res) => {
     Admin.find()
       .then(admins => {
         res.status(200).json(admins);
