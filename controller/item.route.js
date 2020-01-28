@@ -2,14 +2,16 @@ const router = require("express").Router();
 
 const Item = require("../models/Item");
 
+const assignId = require("../helper/assignId");
+
 router
   .route("/")
   .get((req, res) => {
-    const query = {};
+    let query = {};
     const category = req.query.category;
     const seller = req.query.seller;
     if (category) {
-      query.category = category;
+      query = { "category.name": category.toUpperCase() };
     }
     if (seller) {
       query.seller = seller;
@@ -22,12 +24,14 @@ router
         res.status(404).json(err);
       });
   })
-  .post((req, res) => {
+  .post(async (req, res) => {
     const item = new Item({
-      _id: req.body._id,
-      category: req.body.category,
-      seller: req.body.seller,
-      description: req.body.description
+      _id: await assignId(Item),
+      category: {
+        name: req.body.category.toUpperCase(),
+        subCategory: req.body.type
+      },
+      seller: req.body.seller
     });
 
     item

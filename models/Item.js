@@ -9,24 +9,34 @@ const ItemSchema = mongoose.Schema({
   // Probably make a separate schema and will be able to add or delete it too.
   // Select from the arrays of category -> Dropdown menu
   category: {
-    type: String,
-    required: true
+    name: String,
+    subCategory: String
   },
-  cost_price: {
-    type: Number
-    // required: true
-  },
-  marked_price: {
-    type: Number
-    // required: true
-  },
-  description: {
+  size: {
     type: String
   },
-  // Will be reduced when it's sold and increased when bought.
-  volume: {
+  color: {
+    type: String
+  },
+  quality: {
+    type: String
+  },
+  soldPieces: {
+    type: Number
+  },
+  totalPieces: {
+    type: Number
+  },
+  costPrice: {
     type: Number
     // required: true
+  },
+  markedPrice: {
+    type: Number
+    // required: true
+  },
+  soldPrice: {
+    type: Number
   },
   // Will come from the supplier table.
   // Probably will be able to add or delete it too.

@@ -8,6 +8,9 @@ const CategorySchema = mongoose.Schema({
   name: {
     type: String,
     required: true
+  },
+  type: {
+    type: Array
   }
 });
 

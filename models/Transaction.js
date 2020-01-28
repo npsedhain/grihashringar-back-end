@@ -1,20 +1,20 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const TransactionSchema = mongoose.Schema({
   _id: {
     type: Number,
     required: true
   },
-  bill_number: {
+  billNumber: {
     type: Number,
     required: true
   },
-  bill_amount: {
+  billAmount: {
     type: Number,
     required: true
   },
   // the amount that was either received or given during the transaction.
-  transaction_amount: {
+  transactionAmount: {
     type: Number,
     required: true
   },
@@ -32,4 +32,4 @@ const TransactionSchema = mongoose.Schema({
   }
 });
 
-module.exports = mongoose.model('Transactions', TransactionSchema);
+module.exports = mongoose.model("Transactions", TransactionSchema);

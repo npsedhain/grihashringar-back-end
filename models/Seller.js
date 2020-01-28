@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const SellerSchema = mongoose.Schema({
   _id: {
@@ -9,7 +9,7 @@ const SellerSchema = mongoose.Schema({
     type: String,
     required: true
   },
-  vat_number: {
+  vatNumber: {
     type: Number
   },
   location: {
@@ -22,4 +22,4 @@ const SellerSchema = mongoose.Schema({
   }
 });
 
-module.exports = mongoose.model('Sellers', SellerSchema);
+module.exports = mongoose.model("Sellers", SellerSchema);

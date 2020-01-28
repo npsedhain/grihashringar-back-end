@@ -23,7 +23,7 @@ const itemRoute = require("./controller/item.route");
 app.use("/api/admin", adminRoute);
 app.use("/api/login", loginRoute);
 app.use("/api/category", categoryRoute);
-app.use("/api/inventory", itemRoute);
+app.use("/api/item", itemRoute);
 app.use("/api/token/refresh", refreshRoute);
 
 //ROUTES
@@ -35,7 +35,8 @@ app.get("/", (req, res) => {
 mongoose.connect(
   process.env.DB_CONNECTION,
   {
-    useNewUrlParser: true
+    useNewUrlParser: true,
+    useUnifiedTopology: true
   },
   (err, db) => {
     if (err) {
