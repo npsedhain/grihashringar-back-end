@@ -24,7 +24,7 @@ const ItemSchema = mongoose.Schema({
   soldPieces: {
     type: Number
   },
-  totalPieces: {
+  remainingPieces: {
     type: Number
   },
   costPrice: {

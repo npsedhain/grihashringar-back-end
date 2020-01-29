@@ -5,6 +5,10 @@ const TransactionSchema = mongoose.Schema({
     type: Number,
     required: true
   },
+  itemId: {
+    type: Number,
+    required: true
+  },
   billNumber: {
     type: Number,
     required: true
@@ -18,12 +22,12 @@ const TransactionSchema = mongoose.Schema({
     type: Number,
     required: true
   },
-  payee: {
-    type: String,
+  sellerId: {
+    type: Number,
     required: true
   },
-  payer: {
-    type: String,
+  buyerId: {
+    type: Number,
     required: true
   },
   date: {

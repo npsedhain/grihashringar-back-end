@@ -10,12 +10,14 @@ const BuyerSchema = mongoose.Schema({
     required: true
   },
   location: {
-    type: String,
-    required: true
+    type: String
   },
   mobile: {
-    type: String,
-    required: true
+    type: String
+  },
+  transactions: {
+    type: Array,
+    default: []
   }
 });
 

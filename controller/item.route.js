@@ -48,6 +48,16 @@ router
       });
   });
 
+router.route("/:_id").patch((req, res) => {
+  Item.findByIdAndUpdate(req.params._id, { remainingPieces: req.body.boughtPieces })
+    .then(success => {
+      res.status(200).json(success);
+    })
+    .catch(error => {
+      res.status(500).json(error);
+    });
+});
+
 router
   .route("/:category")
   .get((req, res) => {

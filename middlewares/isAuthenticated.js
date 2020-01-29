@@ -15,13 +15,10 @@ function isAuthenticated(req, res, next) {
   const bearer = bearerHeader.split(" ");
   const accessToken = bearer[1];
 
-  jwt.verify(accessToken, process.env.SECRET, (err, decoded) => {
+  jwt.verify(accessToken, process.env.SECRET, { new: true }, (err, decoded) => {
     if (err) {
-      res.status(401).json({ message: "Please login to access the resource." });
-      return;
-    }
-    if (Date.now() > decoded.exp * 1000) {
-      res.status(401).json({ expired: true, message: "Token expired." });
+      console.log(err);
+      res.status(401).json({ message: err.message });
       return;
     }
     // Check if the found user is valid.
