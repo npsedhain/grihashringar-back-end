@@ -13,13 +13,13 @@ app.use(cors());
 app.use(bodyParser.json());
 
 //Import routes
-const itemRoute = require("./controller/item.route");
-const buyerRoute = require("./controller/buyer.route");
-const loginRoute = require("./controller/login.route");
-const adminRoute = require("./controller/admin.route");
-const refreshRoute = require("./controller/refresh.route");
-const categoryRoute = require("./controller/category.route");
-const transactionRoute = require("./controller/transaction.route");
+const itemRoute = require("./routes/item.route");
+const buyerRoute = require("./routes/buyer.route");
+const loginRoute = require("./routes/login.route");
+const adminRoute = require("./routes/admin.route");
+const refreshRoute = require("./routes/refresh.route");
+const categoryRoute = require("./routes/category.route");
+const transactionRoute = require("./routes/transaction.route");
 
 // Router level middleware
 app.use("/api/item", itemRoute);

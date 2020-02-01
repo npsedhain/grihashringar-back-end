@@ -1,9 +1,8 @@
-const router = require("express").Router();
 const Admin = require("../models/Admin");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 
-router.route("/").post((req, res, next) => {
+const loginUser = (req, res) => {
   let errors = [];
   const { username, password } = req.body;
   if (!username) {
@@ -80,6 +79,8 @@ router.route("/").post((req, res, next) => {
         res.json({ err, message: "Sorry, can't find the username." });
       });
   }
-});
+};
 
-module.exports = router;
+module.exports = {
+  loginUser
+};

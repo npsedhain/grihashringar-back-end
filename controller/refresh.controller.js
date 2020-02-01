@@ -1,8 +1,7 @@
-const router = require("express").Router();
 const Admin = require("../models/Admin");
 const jwt = require("jsonwebtoken");
 
-router.route("/").post((req, res) => {
+const getRefreshToken = (req, res) => {
   const refreshToken = req.body.refreshToken;
 
   if (!refreshToken) {
@@ -66,6 +65,8 @@ router.route("/").post((req, res) => {
         res.status(401).json({ err, message: "Please login first." });
       });
   });
-});
+};
 
-module.exports = router;
+module.exports = {
+  getRefreshToken
+};
