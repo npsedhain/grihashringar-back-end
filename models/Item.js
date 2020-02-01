@@ -6,6 +6,9 @@ const ItemSchema = mongoose.Schema({
     type: Number,
     required: true
   },
+  name: {
+    type: String
+  },
   // Probably make a separate schema and will be able to add or delete it too.
   // Select from the arrays of category -> Dropdown menu
   category: {
@@ -35,15 +38,9 @@ const ItemSchema = mongoose.Schema({
     type: Number
     // required: true
   },
-  soldPrice: {
-    type: Number
-  },
-  // Will come from the supplier table.
-  // Probably will be able to add or delete it too.
-  // Select from the arrays of suppliers -> Dropdown menu
   // May letter keep a reference or a subdoc, need to check.
   seller: {
-    type: String
+    type: Object
     // required: true
   },
   image: {

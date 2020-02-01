@@ -1,62 +1,150 @@
 const Item = require("../models/Item");
 const Buyer = require("../models/Buyer");
+const Seller = require("../models/Seller");
 const Transaction = require("../models/Transaction");
 
 const assignId = require("../helper/assignId");
 
+const getTransactions = (req, res) => {
+  let query = {};
+
+  Transaction.find(query).then(success => {
+    res.status(200).json({
+      success
+    })
+  }).catch(error => {
+    res.status(500).json({
+      error,
+      message: "Error finding the transactions."
+    })
+  });
+};
+
 const postSoldTransaction = async (req, res) => {
-  let transaction = new Transaction({
+  const transaction = new Transaction({
     _id: await assignId(Transaction),
-    itemId: req.body.itemId,
+    item: {
+      _id: req.body.itemId,
+      name: req.body.itemName,
+      category: req.body.category
+    },
     billNumber: req.body.billNumber,
     billAmount: req.body.billAmount,
     transactionAmount: req.body.transactionAmount,
     soldPieces: req.body.soldPieces,
-    sellerId: 0,
-    buyerId: req.body.buyerId
+    seller: {
+      _id: 0
+    },
+    buyer: {
+      _id: req.body.buyerId,
+      name: req.body.buyerName
+    }
   });
 
-  try {
-    const item = await Item.findById(req.body.itemId);
-    await item.updateOne({
+  const item = await Item.findById(req.body.itemId);
+
+  item
+    .updateOne({
       remainingPieces: item.remainingPieces - req.body.soldPieces,
       soldPieces: item.soldPieces + req.body.soldPieces || req.body.soldPieces
+    })
+    .then(() => {
+      Buyer.findByIdAndUpdate(
+        req.body.buyerId,
+        { $push: { transactions: req.body.billNumber } },
+        { new: true, useFindAndModify: false }
+      )
+        .then(() => {
+          transaction
+            .save()
+            .then(success => {
+              res.status(200).json({
+                success,
+                message: "Transaction successful."
+              });
+            })
+            .catch(error => {
+              res.status(500).json({
+                error,
+                message: "Error saving the transaction."
+              });
+            });
+        })
+        .catch(error => {
+          res.json(500).json({
+            error,
+            message: "Error updating the buyer transaction."
+          });
+        });
+    })
+    .catch(error => {
+      res.json(500).json({ error, message: "Error updating the item." });
     });
-    await Buyer.findByIdAndUpdate(
-      req.body.buyerId,
-      { $push: { transactions: req.body.billNumber } },
-      { new: true, useFindAndModify: false }
-    );
-    await transaction.save();
-    res.send('ok');
-  } catch (error) {
-    res
-      .status(500)
-      .json({
-        error,
-        message: "Error completing the transaction. Please try again."
-      });
-  }
 };
 
 const postBoughtTransaction = async (req, res) => {
   const transaction = new Transaction({
     _id: await assignId(Transaction),
+    item: {
+      _id: req.body.itemId,
+      name: req.body.itemName,
+      category: req.body.category
+    },
     billNumber: req.body.billNumber,
-    billAmount: req.body.billAmount
+    billAmount: req.body.billAmount,
+    transactionAmount: req.body.transactionAmount,
+    boughtPieces: req.body.boughtPieces,
+    seller: {
+      _id: req.body.sellerId,
+      name: req.body.sellerName
+    },
+    buyer: {
+      _id: 0
+    }
   });
 
-  transaction
-    .save()
-    .then(success => {
-      res.status(200).json(success);
+  const item = await Item.findById(req.body.itemId);
+
+  item
+    .updateOne({
+      remainingPieces: item.remainingPieces + req.body.boughtPieces
+    })
+    .then(() => {
+      Seller.findByIdAndUpdate(
+        req.body.sellerId,
+        { $push: { transactions: req.body.billNumber } },
+        { new: true, useFindAndModify: false }
+      )
+        .then(() => {
+          transaction
+            .save()
+            .then(success => {
+              res.status(200).json({
+                success,
+                message: "Transaction successful."
+              });
+            })
+            .catch(error => {
+              res.status(500).json({
+                error,
+                message: "Error saving the transaction."
+              });
+            });
+        })
+        .catch(error => {
+          res.json(500).json({
+            error,
+            message: "Error updating the buyer transaction."
+          });
+        });
     })
     .catch(error => {
-      res.status(500).json(error);
+      res.json(500).json({ error, message: "Error updating the item." });
     });
 };
 
 module.exports = {
+  getTransactions,
   postSoldTransaction,
   postBoughtTransaction
 };
