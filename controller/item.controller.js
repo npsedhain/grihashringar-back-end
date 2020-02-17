@@ -23,10 +23,9 @@ const getItems = (req, res) => {
 const postItem = async (req, res) => {
   const item = new Item({
     _id: await assignId(Item),
-    category: {
-      name: req.body.category.toUpperCase(),
-      subCategory: req.body.type
-    },
+    name: req.body.name,
+    category: req.body.category.toUpperCase(),
+    subCategory: req.body.type,
     seller: req.body.seller
   });
 
@@ -41,7 +40,9 @@ const postItem = async (req, res) => {
 };
 
 const editItem = (req, res) => {
-  Item.findByIdAndUpdate(req.params._id, { remainingPieces: req.body.boughtPieces })
+  Item.findByIdAndUpdate(req.params._id, {
+    remainingPieces: req.body.boughtPieces
+  })
     .then(success => {
       res.status(200).json(success);
     })
@@ -54,4 +55,4 @@ module.exports = {
   getItems,
   postItem,
   editItem
-}
+};

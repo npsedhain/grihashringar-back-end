@@ -7,13 +7,18 @@ const ItemSchema = mongoose.Schema({
     required: true
   },
   name: {
-    type: String
+    type: String,
+    required: true
   },
   // Probably make a separate schema and will be able to add or delete it too.
   // Select from the arrays of category -> Dropdown menu
   category: {
-    name: String,
-    subCategory: String
+    type: String,
+    required: true
+  },
+  subCategory: {
+    type: String,
+    required: true
   },
   size: {
     type: String
@@ -25,10 +30,12 @@ const ItemSchema = mongoose.Schema({
     type: String
   },
   soldPieces: {
-    type: Number
+    type: Number,
+    default: 0
   },
   remainingPieces: {
-    type: Number
+    type: Number,
+    default: 2
   },
   costPrice: {
     type: Number

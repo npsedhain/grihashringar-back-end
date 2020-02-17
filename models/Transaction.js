@@ -5,30 +5,51 @@ const TransactionSchema = mongoose.Schema({
     type: Number,
     required: true
   },
+  itemCategory: {
+    type: String,
+    // required: true
+  },
   itemId: {
     type: Number,
     required: true
   },
   billNumber: {
     type: Number,
-    required: true
+    unique: true,
+    // required: true
   },
   billAmount: {
     type: Number,
     required: true
   },
+  soldPieces: {
+    type: Number
+  },
+  boughtPieces: {
+    type: Number
+  },
   // the amount that was either received or given during the transaction.
   transactionAmount: {
     type: Number,
-    required: true
+    // required: true
+  },
+  // item's bought price - sold price(bill amount)
+  profit: {
+    type: Number
+  },
+  // when clicked should give seller over view
+  seller: {
+    type: String
   },
   sellerId: {
-    type: Number,
-    required: true
+    type: Number
+  },
+  // when clicked should give buyer over view
+  buyer: {
+    type: String
   },
   buyerId: {
-    type: Number,
-    required: true
+    type: Number
   },
   date: {
     type: Date,

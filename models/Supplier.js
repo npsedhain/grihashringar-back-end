@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const BuyerSchema = mongoose.Schema({
+const SupplierSchema = mongoose.Schema({
   _id: {
     type: Number,
     required: true
@@ -21,4 +21,4 @@ const BuyerSchema = mongoose.Schema({
   }
 });
 
-module.exports = mongoose.model('Buyers', BuyerSchema);
+module.exports = mongoose.model('Supplier', SupplierSchema);

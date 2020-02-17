@@ -5,11 +5,11 @@ const isAuthenticated = require("../middlewares/isAuthenticated");
 router.use(isAuthenticated);
 
 // Load controllers
-const buyerController = require('../controller/buyer.controller');
+const supplierController = require('../controller/supplier.controller');
 
 router
   .route("/")
-  .get(buyerController.getBuyers)
-  .post(buyerController.postBuyer);
+  .get(supplierController.getSuppliers)
+  .post(supplierController.postSupplier);
 
 module.exports = router;

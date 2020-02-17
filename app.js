@@ -14,24 +14,26 @@ app.use(bodyParser.json());
 
 //Import routes
 const itemRoute = require("./routes/item.route");
-const buyerRoute = require("./routes/buyer.route");
+const customerRoute = require("./routes/customer.route");
 const loginRoute = require("./routes/login.route");
 const adminRoute = require("./routes/admin.route");
 const refreshRoute = require("./routes/refresh.route");
+const supplierRoute = require("./routes/supplier.route");
 const categoryRoute = require("./routes/category.route");
 const transactionRoute = require("./routes/transaction.route");
 
 // Router level middleware
 app.use("/api/item", itemRoute);
-app.use("/api/buyer", buyerRoute);
 app.use("/api/admin", adminRoute);
 app.use("/api/login", loginRoute);
+app.use("/api/customer", customerRoute);
+app.use("/api/supplier", supplierRoute);
 app.use("/api/category", categoryRoute);
 app.use("/api/token/refresh", refreshRoute);
 app.use("/api/transaction", transactionRoute);
 
 //ROUTES
-app.get("/", (req, res) => {
+app.get("/api", (req, res) => {
   res.send("We are in home");
 });
 
