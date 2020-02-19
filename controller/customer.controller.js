@@ -34,7 +34,8 @@ const postCustomer = async (req, res) => {
   const customer = new Customer({
     _id: await assignId(Customer),
     name: req.body.name,
-    location: req.body.location
+    location: req.body.location,
+    mobile: req.body.mobile
   });
 
   customer
