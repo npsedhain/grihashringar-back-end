@@ -1,3 +1,5 @@
+const mongoose = require("mongoose");
+
 const Item = require("../models/Item");
 const Customer = require("../models/Customer");
 const Supplier = require("../models/Supplier");
@@ -51,40 +53,53 @@ const postSoldTransaction = async (req, res) => {
 
   const item = await Item.findById(req.body.itemId);
 
-  if (!item.remainingPieces || item.remainingPieces <= 0) {
+  if (!item || !item.remainingPieces || item.remainingPieces <= 0) {
     res.status(400).json({
       message: "You have no items remaining to sell."
     });
     return;
   }
 
+  const session = await mongoose.startSession();
+  session.startTransaction();
+  const options = { session, new: true };
+
   item
-    .updateOne({
-      remainingPieces: item.remainingPieces - req.body.soldPieces,
-      soldPieces: item.soldPieces + req.body.soldPieces || req.body.soldPieces
-    })
+    .updateOne(
+      {
+        remainingPieces: item.remainingPieces - req.body.soldPieces,
+        soldPieces: item.soldPieces + req.body.soldPieces || req.body.soldPieces
+      },
+      options
+    )
     .then(() => {
       Customer.findByIdAndUpdate(
         req.body.customerId,
         { $push: { transactions: transaction._id } },
         { new: true, useFindAndModify: false },
-        (error, success) => {
+        async (error, success) => {
           if (error) {
+            await session.abortTransaction();
+            session.endSession();
             res.status(500).json({
               error,
               message: "Error updating the customer transaction."
             });
             return;
           }
-          transaction
+          transactionsa
             .save()
-            .then(success => {
+            .then(async success => {
+              await session.commitTransaction();
+              session.endSession();
               res.status(200).json({
                 success,
                 message: "Transaction successful."
               });
             })
-            .catch(error => {
+            .catch(async error => {
+              await session.abortTransaction();
+              session.endSession();
               res.status(500).json({
                 error,
                 message: "Error saving the transaction."
@@ -93,7 +108,9 @@ const postSoldTransaction = async (req, res) => {
         }
       );
     })
-    .catch(error => {
+    .catch(async error => {
+      await session.abortTransaction();
+      session.endSession();
       res.status(500).json({ error, message: "Error updating the item." });
     });
 };
