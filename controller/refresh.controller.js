@@ -11,7 +11,7 @@ const getRefreshToken = (req, res) => {
     return;
   }
 
-  jwt.verify(refreshToken, process.env.SECRET, (err, decoded) => {
+  jwt.verify(refreshToken, process.env.GRIHA_SECRET, (err, decoded) => {
     if (err) {
       res
         .status(401)
@@ -31,7 +31,7 @@ const getRefreshToken = (req, res) => {
         let refreshToken;
         jwt.sign(
           { user },
-          process.env.SECRET,
+          process.env.GRIHA_SECRET,
           { expiresIn: "1h" },
           (err, token) => {
             if (err) {
@@ -42,7 +42,7 @@ const getRefreshToken = (req, res) => {
 
             jwt.sign(
               { user },
-              process.env.SECRET,
+              process.env.GRIHA_SECRET,
               { expiresIn: "30d" },
               (err, token) => {
                 if (err) {

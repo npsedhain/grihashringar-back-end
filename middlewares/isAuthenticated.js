@@ -15,7 +15,7 @@ function isAuthenticated(req, res, next) {
   const bearer = bearerHeader.split(" ");
   const accessToken = bearer[1];
 
-  jwt.verify(accessToken, process.env.SECRET, { new: true }, (err, decoded) => {
+  jwt.verify(accessToken, process.env.GRIHA_SECRET, { new: true }, (err, decoded) => {
     if (err) {
       console.log(err);
       res.status(401).json({ message: err.message });

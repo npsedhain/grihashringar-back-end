@@ -36,7 +36,7 @@ const loginUser = (req, res) => {
             let refreshToken;
             jwt.sign(
               { user },
-              process.env.SECRET,
+              process.env.GRIHA_SECRET,
               { expiresIn: "1h" },
               (err, token) => {
                 if (err) {
@@ -47,7 +47,7 @@ const loginUser = (req, res) => {
 
                 jwt.sign(
                   { user },
-                  process.env.SECRET,
+                  process.env.GRIHA_SECRET,
                   { expiresIn: "30d" },
                   (err, token) => {
                     if (err) {

@@ -39,7 +39,7 @@ app.get("/api", (req, res) => {
 
 //Connect to db
 mongoose.connect(
-  process.env.DB_CONNECTION,
+  process.env.GRIHA_DB_CONNECTION,
   {
     useNewUrlParser: true,
     useUnifiedTopology: true
@@ -51,8 +51,8 @@ mongoose.connect(
         .json({ err, message: " Error connecting to the database. " });
       return;
     }
-    console.log("Connected to db at port,", process.env.PORT);
+    console.log("Connected to db at port,", process.env.GRIHA_PORT);
   }
 );
 
-app.listen(process.env.PORT);
+app.listen(process.env.GRIHA_PORT);
