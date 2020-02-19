@@ -2,7 +2,21 @@ const Item = require("../models/Item");
 const assignId = require("../helper/assignId");
 
 const getItems = (req, res) => {
+  const pageNo = parseInt(req.query.pageNo);
+  const pageSize = parseInt(req.query.pageSize);
   let query = {};
+
+  if (pageNo < 0 || pageNo === 0) {
+    res.status(400).json({
+      error: true,
+      message: "Invalid page number, should start with 1."
+    });
+    return;
+  }
+
+  const skip = pageSize * (pageNo - 1);
+  const limit = pageSize;
+
   const category = req.query.category;
   const seller = req.query.seller;
   if (category) {
@@ -11,7 +25,7 @@ const getItems = (req, res) => {
   if (seller) {
     query.seller = seller;
   }
-  Item.find(query)
+  Item.find(query, {}, { skip, limit })
     .then(items => {
       res.status(200).json(items);
     })

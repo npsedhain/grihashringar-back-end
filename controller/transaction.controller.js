@@ -8,9 +8,22 @@ const Transaction = require("../models/Transaction");
 const assignId = require("../helper/assignId");
 
 const getTransactions = (req, res) => {
+  const pageNo = parseInt(req.query.pageNo);
+  const pageSize = parseInt(req.query.pageSize);
   let query = {};
 
-  Transaction.find(query)
+  if (pageNo < 0 || pageNo === 0) {
+    res.status(400).json({
+      error: true,
+      message: "Invalid page number, should start with 1."
+    });
+    return;
+  }
+
+  const skip = pageSize * (pageNo - 1);
+  const limit = pageSize;
+
+  Transaction.find(query, {}, { skip, limit })
     .then(success => {
       res.status(200).json({
         success

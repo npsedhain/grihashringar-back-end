@@ -4,7 +4,22 @@ const Transaction = require("../models/Transaction");
 const assignId = require("../helper/assignId");
 
 const getCustomers = (req, res) => {
-  Customer.find({})
+  const pageNo = parseInt(req.query.pageNo);
+  const pageSize = parseInt(req.query.pageSize);
+  let query = {};
+
+  if (pageNo < 0 || pageNo === 0) {
+    res.status(400).json({
+      error: true,
+      message: "Invalid page number, should start with 1."
+    });
+    return;
+  }
+
+  const skip = pageSize * (pageNo - 1);
+  const limit = pageSize;
+
+  Customer.find(query, {}, { skip, limit })
     .then(customers => {
       res.status(200).json({ customers });
     })
