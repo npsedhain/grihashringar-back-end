@@ -1,5 +1,6 @@
 const Admin = require("../models/Admin");
 const assignId = require("../helper/assignId");
+const bcrypt = require("bcryptjs");
 
 const getAdmins = (req, res) => {
   Admin.find()
