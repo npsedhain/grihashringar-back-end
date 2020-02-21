@@ -39,7 +39,7 @@ app.get("/api", (req, res) => {
 
 //Connect to db
 mongoose.connect(
-  process.env.GRIHA_DB_CONNECTION,
+  process.env.GRIHA_DB_CONNECTION_mlab,
   {
     useNewUrlParser: true,
     useUnifiedTopology: true
